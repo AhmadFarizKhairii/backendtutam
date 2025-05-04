@@ -8,6 +8,7 @@ class BonController {
 
             // Validasi input
             if (!name || !storeName || !itemName || !itemPrice || !date || !ownerName) {
+                console.error('Validation error: Missing required fields');
                 return res.status(400).json({ error: 'All fields are required' });
             }
 
@@ -73,6 +74,7 @@ class BonController {
 
             // Validasi input
             if (!id) {
+                console.error('Validation error: ID is required');
                 return res.status(400).json({ error: 'ID is required' });
             }
 
@@ -80,7 +82,7 @@ class BonController {
 
             const result = await pool.query('DELETE FROM bons WHERE id = $1 RETURNING *', [id]);
             if (result.rowCount === 0) {
-                console.log('Bon not found with ID:', id);
+                console.error('Bon not found with ID:', id);
                 return res.status(404).json({ error: 'Bon not found' });
             }
 
