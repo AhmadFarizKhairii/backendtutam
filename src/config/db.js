@@ -4,8 +4,8 @@ require('dotenv').config();
 // Konfigurasi koneksi PostgreSQL
 const pool = new Pool({
     connectionString: process.env.PG_CONNECTION_STRING,
-    ssl: process.env.PG_CONNECTION_STRING.includes('sslmode=disable')
-        ? false // Nonaktifkan SSL jika `sslmode=disable` ada di connection string
+    ssl: process.env.PG_CONNECTION_STRING.includes('sslmode=disable') || process.env.PG_CONNECTION_STRING.includes('localhost')
+        ? false // Nonaktifkan SSL jika `sslmode=disable` atau menggunakan localhost
         : { rejectUnauthorized: false }, // Aktifkan SSL jika diperlukan
 });
 

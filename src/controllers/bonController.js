@@ -4,15 +4,21 @@ class BonController {
     // Create Bon
     async createBon(req, res) {
         try {
-            const { name, storeName, itemName, itemPrice, date, ownerName } = req.body; // Tambahkan itemName
+            const { name, storeName, itemName, itemPrice, date, ownerName } = req.body;
+
+            // Validasi input
+            if (!name || !storeName || !itemName || !itemPrice || !date || !ownerName) {
+                return res.status(400).json({ error: 'All fields are required' });
+            }
+
             const result = await pool.query(
                 'INSERT INTO bons (name, store_name, item_name, item_price, date, owner_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-                [name, storeName, itemName, itemPrice, date, ownerName] // Tambahkan itemName ke query
+                [name, storeName, itemName, itemPrice, date, ownerName]
             );
             res.status(201).json(result.rows[0]);
         } catch (err) {
             console.error('Error creating bon:', err.message);
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -23,7 +29,7 @@ class BonController {
             res.status(200).json(result.rows);
         } catch (err) {
             console.error('Error fetching bons:', err.message);
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -48,7 +54,7 @@ class BonController {
             res.status(200).json(totalsWithColor);
         } catch (err) {
             console.error('Error fetching total bon:', err.message);
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -56,6 +62,12 @@ class BonController {
     async deleteBon(req, res) {
         try {
             const { id } = req.params;
+
+            // Validasi input
+            if (!id) {
+                return res.status(400).json({ error: 'ID is required' });
+            }
+
             const result = await pool.query('DELETE FROM bons WHERE id = $1 RETURNING *', [id]);
             if (result.rowCount === 0) {
                 return res.status(404).json({ error: 'Bon not found' });
@@ -63,9 +75,9 @@ class BonController {
             res.status(200).json({ message: 'Bon deleted successfully' });
         } catch (err) {
             console.error('Error deleting bon:', err.message);
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 }
 
-module.exports = BonController;
+module.exports = new BonController();

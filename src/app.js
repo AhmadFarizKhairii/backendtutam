@@ -21,6 +21,7 @@ if (!process.env.PG_CONNECTION_STRING) {
 (async () => {
   try {
     await connectDB(); // Memastikan koneksi database berhasil
+    console.log('Database connection established successfully');
   } catch (err) {
     console.error('Failed to connect to the database:', err.message);
     process.exit(1); // Keluar jika koneksi gagal

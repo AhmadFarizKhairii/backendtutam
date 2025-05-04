@@ -1,7 +1,7 @@
 {
   "name": "simple-app-backend",
   "version": "1.0.0",
-  "description": "Backend for a simple Todo application using Express and MongoDB/PostgreSQL.",
+  "description": "Backend for a simple application using Express and PostgreSQL.",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
@@ -9,13 +9,12 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^8.6.0",
-    "express": "^4.17.1",
-    "mongoose": "^5.10.9",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "pg": "^8.15.6"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.22"
   },
   "author": "Your Name",
   "license": "ISC"
