@@ -1,20 +1,22 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+// Konfigurasi koneksi PostgreSQL
 const pool = new Pool({
     connectionString: process.env.PG_CONNECTION_STRING,
-    ssl: process.env.PG_CONNECTION_STRING.includes('localhost')
-        ? false // Nonaktifkan SSL jika menggunakan database lokal
-        : { rejectUnauthorized: false }, // Railway membutuhkan SSL
+    ssl: process.env.PG_CONNECTION_STRING.includes('sslmode=disable')
+        ? false // Nonaktifkan SSL jika `sslmode=disable` ada di connection string
+        : { rejectUnauthorized: false }, // Aktifkan SSL jika diperlukan
 });
 
+// Fungsi untuk menginisialisasi koneksi database
 const connectDB = async () => {
     try {
         await pool.connect();
         console.log('Connected to PostgreSQL database');
     } catch (err) {
         console.error('PostgreSQL connection error:', err.message);
-        process.exit(1);
+        process.exit(1); // Keluar jika koneksi gagal
     }
 };
 
