@@ -3,6 +3,9 @@ require('dotenv').config();
 
 const pool = new Pool({
     connectionString: process.env.PG_CONNECTION_STRING,
+    ssl: process.env.PG_CONNECTION_STRING.includes('localhost')
+        ? false // Nonaktifkan SSL jika menggunakan database lokal
+        : { rejectUnauthorized: false }, // Railway membutuhkan SSL
 });
 
 const connectDB = async () => {

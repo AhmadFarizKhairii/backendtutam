@@ -1,8 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg'); // Menggunakan Pool untuk koneksi PostgreSQL
 const bonRoutes = require('./routes/bonRoutes');
+const { connectDB } = require('./config/db'); // Menggunakan koneksi dari db.js
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,24 +17,8 @@ if (!process.env.PG_CONNECTION_STRING) {
   process.exit(1);
 }
 
-// PostgreSQL Connection
-const pool = new Pool({
-  connectionString: process.env.PG_CONNECTION_STRING,
-  ssl: process.env.PG_CONNECTION_STRING.includes('sslmode=disable')
-    ? false // Nonaktifkan SSL jika `sslmode=disable` ada di connection string
-    : { rejectUnauthorized: false }, // Railway atau server lain membutuhkan SSL
-});
-
-// Test Database Connection
-(async () => {
-  try {
-    await pool.connect();
-    console.log('Database connected successfully');
-  } catch (err) {
-    console.error('Failed to connect to the database:', err.message);
-    process.exit(1);
-  }
-})();
+// Inisialisasi Koneksi Database
+connectDB();
 
 // Routes
 app.use('/api', bonRoutes);
