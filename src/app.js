@@ -5,7 +5,7 @@ const bonRoutes = require('./routes/bonRoutes');
 const { connectDB } = require('./config/db'); // Menggunakan koneksi dari db.js
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 3002;
 
 // Middleware
 app.use(cors());
